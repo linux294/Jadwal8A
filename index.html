@@ -148,16 +148,110 @@
             margin-bottom: 10px;
             border-radius: 4px;
         }
+        
+        .theme-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f8f8f8;
+        }
+        
+        .theme-btn {
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-btn.active {
+            border-color: #2196F3;
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Blue Theme (Default) */
+        .theme-blue .header {
+            background-color: #2196F3;
+        }
+        
+        .theme-blue .day-tab.active {
+            background-color: #4CAF50;
+        }
+        
+        .theme-blue .time-header {
+            background-color: #FF9800;
+        }
+        
+        .theme-blue .break-block {
+            background-color: #FFC107;
+        }
+        
+        .theme-blue .current-time {
+            background-color: #2196F3;
+        }
+        
+        .theme-blue .footer {
+            background-color: #37474F;
+        }
+        
+        .theme-blue .theme-btn.active {
+            border-color: #2196F3;
+            background-color: #2196F3;
+        }
+        
+        /* Pink Theme */
+        .theme-pink .header {
+            background-color: #E91E63;
+        }
+        
+        .theme-pink .day-tab.active {
+            background-color: #FF69B4;
+        }
+        
+        .theme-pink .time-header {
+            background-color: #FF1493;
+        }
+        
+        .theme-pink .break-block {
+            background-color: #FFB6C1;
+            color: #333;
+        }
+        
+        .theme-pink .current-time {
+            background-color: #E91E63;
+        }
+        
+        .theme-pink .footer {
+            background-color: #C2185B;
+        }
+        
+        .theme-pink .theme-btn.active {
+            border-color: #E91E63;
+            background-color: #E91E63;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container theme-blue" id="mainContainer">
         <header class="header">
             <h1>JADWAL KELAS 8A</h1>
             <h2>SMPN 1 TAMBUN SELATAN</h2>
         </header>
         
         <div class="current-time" id="currentTime"></div>
+        
+        <div class="theme-selector">
+            <button class="theme-btn active" onclick="changeTheme('blue')">🔵 Biru</button>
+            <button class="theme-btn" onclick="changeTheme('pink')">🩷 Pink</button>
+        </div>
         
         <div class="day-tabs">
             <button class="day-tab active" onclick="showDay('senin')">SENIN</button>
@@ -444,6 +538,40 @@
             event.target.classList.add('active');
         }
         
+        function changeTheme(theme) {
+            const container = document.getElementById('mainContainer');
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            
+            // Remove all theme classes
+            container.classList.remove('theme-blue', 'theme-pink');
+            
+            // Add selected theme class
+            container.classList.add('theme-' + theme);
+            
+            // Update active button
+            themeButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Save theme preference
+            localStorage.setItem('selectedTheme', theme);
+        }
+        
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('selectedTheme') || 'blue';
+            const container = document.getElementById('mainContainer');
+            const themeButtons = document.querySelectorAll('.theme-btn');
+            
+            container.classList.remove('theme-blue', 'theme-pink');
+            container.classList.add('theme-' + savedTheme);
+            
+            themeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(savedTheme === 'blue' ? 'Biru' : 'Pink')) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
         function updateTime() {
             const now = new Date();
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
@@ -462,6 +590,9 @@
         // Update time every minute
         setInterval(updateTime, 60000);
         updateTime();
+        
+        // Load saved theme
+        loadTheme();
         
         // Auto-select current day
         const today = new Date().getDay();
