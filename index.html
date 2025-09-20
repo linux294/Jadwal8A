@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Pelajaran Kelas 8A</title>
+    <title>Jadwal Kelas 8A - Pixel Art</title>
     <style>
         * {
             margin: 0;
@@ -12,267 +12,230 @@
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.2;
-            padding: 5px;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+            min-height: 100vh;
+            padding: 20px 10px;
+            color: #fff;
+            overflow-x: auto;
         }
         
         .container {
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
+            max-width: 390px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
         
         .header {
             text-align: center;
-            padding: 8px 5px;
-            background-color: #fff;
-            border-bottom: 1px solid #ddd;
-            flex-shrink: 0;
-        }
-        
-        .header h1 {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 2px;
-        }
-        
-        .header h2 {
-            font-size: 12px;
-            margin-bottom: 1px;
-            color: #666;
-        }
-        
-        .header p {
-            font-size: 10px;
-            color: #666;
-        }
-        
-        .table-container {
-            flex: 1;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            border-radius: 8px;
+            position: relative;
             overflow: hidden;
-            padding: 0;
         }
         
-        .schedule-table {
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
             height: 100%;
-            border-collapse: collapse;
-            font-size: 7px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 2s infinite;
         }
         
-        .schedule-table th,
-        .schedule-table td {
-            border: 1px solid #ccc;
-            padding: 1px;
-            text-align: center;
-            vertical-align: middle;
-            overflow: hidden;
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         
-        .schedule-table th {
-            background-color: #f0f0f0;
+        .title {
+            font-size: 16px;
             font-weight: bold;
-            font-size: 6px;
-            height: 25px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7);
+            margin-bottom: 5px;
         }
         
-        .schedule-table td {
-            height: auto;
-        }
-        
-        .time-slot {
-            background-color: #e8e8e8;
-            font-weight: bold;
-            width: 12%;
-            font-size: 6px;
-        }
-        
-        .day-header {
-            background-color: #d8d8d8;
-            font-weight: bold;
-            font-size: 6px;
-            width: 17.6%;
-        }
-        
-        .subject {
-            font-weight: bold;
-            font-size: 6px;
-            margin-bottom: 1px;
-            line-height: 1.1;
-        }
-        
-        .teacher {
-            font-size: 5px;
-            color: #666;
-            line-height: 1;
-        }
-        
-        .break-time {
-            background-color: #ffe6e6;
-            font-style: italic;
-            color: #666;
-            font-size: 6px;
-        }
-        
-        .total-hours {
-            background-color: #f8f8f8;
-            font-weight: bold;
-            font-size: 7px;
+        .subtitle {
+            font-size: 12px;
+            opacity: 0.9;
         }
         
         .creator {
-            text-align: center;
-            padding: 5px;
-            background-color: #f8f8f8;
-            border-top: 1px solid #ddd;
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
             font-size: 8px;
+            opacity: 0.7;
+            color: #00ff88;
+        }
+        
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: 60px repeat(5, 1fr);
+            gap: 2px;
+            font-size: 9px;
+            margin-bottom: 15px;
+        }
+        
+        .time-slot {
+            background: #2d2d44;
+            padding: 8px 4px;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid #444;
             font-weight: bold;
-            color: #555;
-            flex-shrink: 0;
+            color: #00ff88;
         }
         
-        /* Tablet */
-        @media (min-width: 481px) and (max-width: 768px) {
-            .schedule-table {
-                font-size: 9px;
-            }
-            
-            .schedule-table th {
-                font-size: 8px;
-            }
-            
-            .subject {
-                font-size: 8px;
-            }
-            
-            .teacher {
-                font-size: 7px;
-            }
-            
-            .time-slot {
-                font-size: 7px;
-            }
-            
-            .header h1 {
-                font-size: 16px;
-            }
-            
-            .header h2 {
-                font-size: 14px;
-            }
-            
-            .header p {
-                font-size: 12px;
-            }
-            
-            .creator {
-                font-size: 10px;
-            }
+        .day-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            font-size: 10px;
+            border: 2px solid #fff;
         }
         
-        /* Desktop */
-        @media (min-width: 769px) {
-            body {
+        .subject-cell {
+            background: #1e1e3f;
+            padding: 6px 3px;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid #555;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            z-index: 10;
+        }
+        
+        .subject-cell.math {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: white;
+        }
+        
+        .subject-cell.science {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+        
+        .subject-cell.indonesian {
+            background: linear-gradient(135deg, #ffa726, #fb8c00);
+            color: white;
+        }
+        
+        .subject-cell.english {
+            background: linear-gradient(135deg, #ab47bc, #8e24aa);
+            color: white;
+        }
+        
+        .subject-cell.religion {
+            background: linear-gradient(135deg, #66bb6a, #43a047);
+            color: white;
+        }
+        
+        .subject-cell.social {
+            background: linear-gradient(135deg, #42a5f5, #1e88e5);
+            color: white;
+        }
+        
+        .subject-cell.art {
+            background: linear-gradient(135deg, #ec407a, #e91e63);
+            color: white;
+        }
+        
+        .subject-cell.pe {
+            background: linear-gradient(135deg, #ff7043, #f4511e);
+            color: white;
+        }
+        
+        .subject-cell.break {
+            background: linear-gradient(135deg, #78909c, #546e7a);
+            color: white;
+            font-style: italic;
+        }
+        
+        .subject-name {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 2px;
+            font-size: 8px;
+        }
+        
+        .teacher-name {
+            font-size: 7px;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        
+        .pixel-decoration {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            animation: pixel-float 3s infinite ease-in-out;
+        }
+        
+        @keyframes pixel-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(180deg); }
+        }
+        
+        .pixel-decoration:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .pixel-decoration:nth-child(2) { top: 20%; right: 15%; animation-delay: 0.5s; }
+        .pixel-decoration:nth-child(3) { bottom: 30%; left: 20%; animation-delay: 1s; }
+        .pixel-decoration:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 1.5s; }
+        
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 8px;
+            border: 1px dashed #00ff88;
+        }
+        
+        .school-info {
+            font-size: 10px;
+            color: #00ff88;
+            margin-bottom: 5px;
+        }
+        
+        .year-info {
+            font-size: 8px;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 390px) {
+            .container {
+                margin: 0 5px;
                 padding: 10px;
             }
             
-            .schedule-table {
-                font-size: 11px;
-            }
-            
-            .schedule-table th {
-                font-size: 10px;
-                height: 35px;
-            }
-            
-            .schedule-table th,
-            .schedule-table td {
-                padding: 4px 2px;
-            }
-            
-            .subject {
-                font-size: 10px;
-                margin-bottom: 2px;
-            }
-            
-            .teacher {
+            .schedule-grid {
                 font-size: 8px;
+                gap: 1px;
             }
             
-            .time-slot {
-                font-size: 9px;
+            .subject-name {
+                font-size: 7px;
             }
             
-            .header {
-                padding: 12px 10px;
-            }
-            
-            .header h1 {
-                font-size: 18px;
-                margin-bottom: 4px;
-            }
-            
-            .header h2 {
-                font-size: 16px;
-                margin-bottom: 2px;
-            }
-            
-            .header p {
-                font-size: 14px;
-            }
-            
-            .creator {
-                font-size: 12px;
-                padding: 8px;
-            }
-        }
-        
-        /* Extra small phones */
-        @media (max-width: 320px) {
-            .schedule-table {
-                font-size: 5px;
-            }
-            
-            .schedule-table th {
-                font-size: 4px;
-                height: 20px;
-            }
-            
-            .subject {
-                font-size: 5px;
-            }
-            
-            .teacher {
-                font-size: 4px;
-            }
-            
-            .time-slot {
-                font-size: 4px;
-            }
-            
-            .header h1 {
-                font-size: 12px;
-            }
-            
-            .header h2 {
-                font-size: 10px;
-            }
-            
-            .header p {
-                font-size: 8px;
-            }
-            
-            .creator {
+            .teacher-name {
                 font-size: 6px;
             }
         }
@@ -280,213 +243,223 @@
 </head>
 <body>
     <div class="container">
+        <div class="pixel-decoration"></div>
+        <div class="pixel-decoration"></div>
+        <div class="pixel-decoration"></div>
+        <div class="pixel-decoration"></div>
+        
         <div class="header">
-            <h1>Jadwal Pelajaran Kelas 8A</h1>
-            <h2>SMPN 1 Tambun Selatan</h2>
-            <p>Tahun Pelajaran 2025/2026</p>
+            <div class="title">JADWAL PELAJARAN KELAS 8A</div>
+            <div class="subtitle">SMPN 1 Tambun Selatan</div>
+            <div class="creator">by Faishal Amir Khallish</div>
         </div>
         
-        <div class="table-container">
-            <table class="schedule-table">
-                <thead>
-                    <tr>
-                        <th class="time-slot">Jam</th>
-                        <th class="day-header">Senin</th>
-                        <th class="day-header">Selasa</th>
-                        <th class="day-header">Rabu</th>
-                        <th class="day-header">Kamis</th>
-                        <th class="day-header">Jumat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="time-slot">06:30-07:15</td>
-                        <td colspan="5">Kokurikuler</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">1</td>
-                        <td>
-                            <div class="subject">PA BP</div>
-                            <div class="teacher">Aan A.</div>
-                        </td>
-                        <td>
-                            <div class="subject">BTQ</div>
-                            <div class="teacher">Aan A.</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.IND</div>
-                            <div class="teacher">Adah</div>
-                        </td>
-                        <td>
-                            <div class="subject">PJOK</div>
-                            <div class="teacher">Hasbi</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.IND</div>
-                            <div class="teacher">Adah</div>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">2</td>
-                        <td>
-                            <div class="subject">PA BP</div>
-                            <div class="teacher">Aan A.</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.ING</div>
-                            <div class="teacher">Anani</div>
-                        </td>
-                        <td>
-                            <div class="subject">MTK</div>
-                            <div class="teacher">Ida S.</div>
-                        </td>
-                        <td>
-                            <div class="subject">PJOK</div>
-                            <div class="teacher">Hasbi</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.IND</div>
-                            <div class="teacher">Adah</div>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">3</td>
-                        <td>
-                            <div class="subject">IPS</div>
-                            <div class="teacher">Purnia</div>
-                        </td>
-                        <td>
-                            <div class="subject">IPA</div>
-                            <div class="teacher">Anjar</div>
-                        </td>
-                        <td>
-                            <div class="subject">MTK</div>
-                            <div class="teacher">Ida S.</div>
-                        </td>
-                        <td>
-                            <div class="subject">BK</div>
-                            <div class="teacher">Rita</div>
-                        </td>
-                        <td>
-                            <div class="subject">IPA</div>
-                            <div class="teacher">Anjar</div>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">4</td>
-                        <td>
-                            <div class="subject">IPS</div>
-                            <div class="teacher">Purnia</div>
-                        </td>
-                        <td>
-                            <div class="subject">IPA</div>
-                            <div class="teacher">Anjar</div>
-                        </td>
-                        <td>
-                            <div class="subject">P.PAN</div>
-                            <div class="teacher">Marlita</div>
-                        </td>
-                        <td>
-                            <div class="subject">IPS</div>
-                            <div class="teacher">Purnia</div>
-                        </td>
-                        <td>
-                            <div class="subject">IPA</div>
-                            <div class="teacher">Anjar</div>
-                        </td>
-                    </tr>
-                    
-                    <tr class="break-time">
-                        <td class="time-slot">ISTIRAHAT</td>
-                        <td colspan="5">09:55 - 10:25</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">5</td>
-                        <td>
-                            <div class="subject">B.SUN</div>
-                            <div class="teacher">Winwin</div>
-                        </td>
-                        <td>
-                            <div class="subject">INF</div>
-                            <div class="teacher">Mujianto</div>
-                        </td>
-                        <td>
-                            <div class="subject">P.PAN</div>
-                            <div class="teacher">Marlita</div>
-                        </td>
-                        <td>
-                            <div class="subject">MTK</div>
-                            <div class="teacher">Ida S.</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.ING</div>
-                            <div class="teacher">Anani</div>
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">6</td>
-                        <td>
-                            <div class="subject">B.IND</div>
-                            <div class="teacher">Adah</div>
-                        </td>
-                        <td>
-                            <div class="subject">INF</div>
-                            <div class="teacher">Mujianto</div>
-                        </td>
-                        <td>
-                            <div class="subject">PKY</div>
-                            <div class="teacher">Surandini</div>
-                        </td>
-                        <td>
-                            <div class="subject">MTK</div>
-                            <div class="teacher">Ida S.</div>
-                        </td>
-                        <td>
-                            <div class="subject">B.ING</div>
-                            <div class="teacher">Anani</div>
-                        </td>
-                    </tr>
-                    
-                    <tr class="break-time">
-                        <td class="time-slot">ISHOMA</td>
-                        <td colspan="5">11:45 - 12:35</td>
-                    </tr>
-                    
-                    <tr>
-                        <td class="time-slot">7</td>
-                        <td>
-                            <div class="subject">B.IND</div>
-                            <div class="teacher">Adah</div>
-                        </td>
-                        <td>-</td>
-                        <td>
-                            <div class="subject">PKY</div>
-                            <div class="teacher">Surandini</div>
-                        </td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    
-                    <tr class="total-hours">
-                        <td class="time-slot"><strong>Total</strong></td>
-                        <td><strong>7</strong></td>
-                        <td><strong>6</strong></td>
-                        <td><strong>7</strong></td>
-                        <td><strong>6</strong></td>
-                        <td><strong>6</strong></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="schedule-grid">
+            <div class="time-slot">JAM</div>
+            <div class="day-header">SEN</div>
+            <div class="day-header">SEL</div>
+            <div class="day-header">RAB</div>
+            <div class="day-header">KAM</div>
+            <div class="day-header">JUM</div>
+            
+            <!-- Jam 1 -->
+            <div class="time-slot">1<br>07:15</div>
+            <div class="subject-cell art">
+                <span class="subject-name">PA BP</span>
+                <span class="teacher-name">Aan Andawiyah</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">Baca Quran</span>
+                <span class="teacher-name">Aan Andawiyah</span>
+            </div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Indonesia</span>
+                <span class="teacher-name">Adah</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">PJOK</span>
+                <span class="teacher-name">H. Hasbi</span>
+            </div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Indonesia</span>
+                <span class="teacher-name">Adah</span>
+            </div>
+            
+            <!-- Jam 2 -->
+            <div class="time-slot">2<br>07:55</div>
+            <div class="subject-cell art">
+                <span class="subject-name">PA BP</span>
+                <span class="teacher-name">Aan Andawiyah</span>
+            </div>
+            <div class="subject-cell english">
+                <span class="subject-name">B. Inggris</span>
+                <span class="teacher-name">H. Anani</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Matematika</span>
+                <span class="teacher-name">Ida Susanti</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">PJOK</span>
+                <span class="teacher-name">H. Hasbi</span>
+            </div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Indonesia</span>
+                <span class="teacher-name">Adah</span>
+            </div>
+            
+            <!-- Jam 3 -->
+            <div class="time-slot">3<br>08:35</div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPS</span>
+                <span class="teacher-name">Purnia</span>
+            </div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPA</span>
+                <span class="teacher-name">Anjar Bayu</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Matematika</span>
+                <span class="teacher-name">Ida Susanti</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">BK</span>
+                <span class="teacher-name">Rita Puspita</span>
+            </div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPA</span>
+                <span class="teacher-name">Anjar Bayu</span>
+            </div>
+            
+            <!-- Jam 4 -->
+            <div class="time-slot">4<br>09:15</div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPS</span>
+                <span class="teacher-name">Purnia</span>
+            </div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPA</span>
+                <span class="teacher-name">Anjar Bayu</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">Pend. Pancasila</span>
+                <span class="teacher-name">Marlita</span>
+            </div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPS</span>
+                <span class="teacher-name">Purnia</span>
+            </div>
+            <div class="subject-cell social">
+                <span class="subject-name">IPA</span>
+                <span class="teacher-name">Anjar Bayu</span>
+            </div>
+            
+            <!-- Istirahat -->
+            <div class="time-slot">IST<br>09:55</div>
+            <div class="subject-cell break">
+                <span class="subject-name">ISTIRAHAT</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">ISTIRAHAT</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">ISTIRAHAT</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">ISTIRAHAT</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">ISTIRAHAT</span>
+            </div>
+            
+            <!-- Jam 5 -->
+            <div class="time-slot">5<br>10:25</div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Sunda</span>
+                <span class="teacher-name">Wiwin</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Informatika</span>
+                <span class="teacher-name">Mujianto</span>
+            </div>
+            <div class="subject-cell religion">
+                <span class="subject-name">Pend. Pancasila</span>
+                <span class="teacher-name">Marlita</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Matematika</span>
+                <span class="teacher-name">Ida Susanti</span>
+            </div>
+            <div class="subject-cell english">
+                <span class="subject-name">B. Inggris</span>
+                <span class="teacher-name">H. Anani</span>
+            </div>
+            
+            <!-- Jam 6 -->
+            <div class="time-slot">6<br>11:05</div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Indonesia</span>
+                <span class="teacher-name">Adah</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Matematika</span>
+                <span class="teacher-name">Mujianto</span>
+            </div>
+            <div class="subject-cell art">
+                <span class="subject-name">Prakarya</span>
+                <span class="teacher-name">H. Surandini</span>
+            </div>
+            <div class="subject-cell math">
+                <span class="subject-name">Matematika</span>
+                <span class="teacher-name">Ida Susanti</span>
+            </div>
+            <div class="subject-cell english">
+                <span class="subject-name">B. Inggris</span>
+                <span class="teacher-name">H. Anani</span>
+            </div>
+            
+            <!-- Jam 7 -->
+            <div class="time-slot">7<br>11:45</div>
+            <div class="subject-cell break">
+                <span class="subject-name">Ishoma + MBG</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">Ishoma + MBG</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">Ishoma + MBG</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">Ishoma + MBG</span>
+            </div>
+            <div class="subject-cell break">
+                <span class="subject-name">Ishoma + MBG</span>
+            </div>
+            
+            <!-- Jam 8 -->
+            <div class="time-slot">8<br>12:35</div>
+            <div class="subject-cell indonesian">
+                <span class="subject-name">B. Indonesia</span>
+                <span class="teacher-name">Adah</span>
+            </div>
+            <div class="subject-cell">
+                <span class="subject-name">-</span>
+            </div>
+            <div class="subject-cell art">
+                <span class="subject-name">Prakarya</span>
+                <span class="teacher-name">H. Surandini</span>
+            </div>
+            <div class="subject-cell">
+                <span class="subject-name">-</span>
+            </div>
+            <div class="subject-cell">
+                <span class="subject-name">-</span>
+            </div>
         </div>
         
-        <div class="creator">
-            Created by: Faishal Amir Khallish
+        <div class="footer">
+            <div class="school-info">SMPN 1 TAMBUN SELATAN</div>
+            <div class="year-info">Tahun Pelajaran 2025/2026</div>
         </div>
     </div>
 </body>
