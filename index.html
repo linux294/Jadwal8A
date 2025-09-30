@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal 8A</title>
+    <title>Jadwal Kelas 8A - 2025/2026</title>
     <style>
         * {
             margin: 0;
@@ -12,331 +12,484 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #00ff00;
+            min-height: 100vh;
             padding: 10px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.03) 2px, rgba(0, 255, 0, 0.03) 4px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
         }
 
         .header {
-            background: #007bff;
-            color: white;
             text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+            padding: 20px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            animation: glow 2s ease-in-out infinite;
         }
 
-        .day {
-            background: white;
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); }
+        }
+
+        .header h1 {
+            font-size: 20px;
+            color: #00ff00;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .header h2 {
+            font-size: 16px;
+            color: #00ccff;
+            text-shadow: 0 0 8px #00ccff;
             margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .day-title {
-            background: #28a745;
-            color: white;
-            padding: 10px;
+        .creator {
+            font-size: 11px;
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .day-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .day-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 12px 8px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
             font-weight: bold;
+            transition: all 0.3s;
+            border-radius: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-btn:active, .day-btn.active {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+            transform: scale(0.95);
+        }
+
+        .schedule-card {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .schedule-card.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .lesson {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #00ff00;
+            border-left: 5px solid #00ff00;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .lesson:hover {
+            border-color: #00ccff;
+            border-left-color: #00ccff;
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.4);
+            transform: translateX(5px);
+        }
+
+        .lesson-number {
+            display: inline-block;
+            background: #00ff00;
+            color: #000;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
             text-align: center;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .schedule {
-            padding: 10px;
-        }
-
-        .item {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
             font-size: 14px;
         }
 
-        .item:last-child {
-            border-bottom: none;
-        }
-
-        .jam {
+        .lesson-time {
+            color: #ffff00;
+            font-size: 13px;
             font-weight: bold;
-            color: #007bff;
-            display: inline-block;
-            width: 20px;
+            text-shadow: 0 0 5px #ffff00;
         }
 
-        .waktu {
-            color: #666;
+        .lesson-subject {
+            color: #00ccff;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 8px 0;
+            text-shadow: 0 0 8px #00ccff;
+        }
+
+        .lesson-teacher {
+            color: #ff00ff;
             font-size: 12px;
-            margin-left: 25px;
+            text-shadow: 0 0 5px #ff00ff;
         }
 
-        .mapel {
-            font-weight: bold;
-            margin-left: 25px;
-        }
-
-        .guru {
-            color: #666;
-            font-size: 12px;
-            margin-left: 25px;
-        }
-
-        .istirahat {
-            background: #ffc107;
-            padding: 8px;
+        .break-time {
+            background: rgba(255, 255, 0, 0.1);
+            border: 2px dashed #ffff00;
+            padding: 12px;
+            margin-bottom: 15px;
             text-align: center;
+            border-radius: 8px;
+            color: #ffff00;
             font-weight: bold;
-            margin: 5px 0;
-            border-radius: 5px;
+            text-shadow: 0 0 10px #ffff00;
         }
 
-        .footer {
-            text-align: center;
+        .total-lessons {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff00ff;
             padding: 15px;
-            color: #666;
-            font-size: 12px;
+            text-align: center;
+            border-radius: 8px;
+            margin-top: 20px;
+            color: #ff00ff;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 0 0 10px #ff00ff;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .robot-corner {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 40px;
+            animation: float 3s ease-in-out infinite;
+            z-index: 1000;
+            filter: drop-shadow(0 0 10px #00ff00);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>JADWAL 8A</h1>
-        <p>SMPN 1 Tambun Selatan</p>
-    </div>
+    <div class="container">
+        <div class="header">
+            <h1>⚡ JADWAL PELAJARAN ⚡</h1>
+            <h2>KELAS 8A</h2>
+            <div style="font-size: 12px; color: #00ff00;">TAHUN PELAJARAN 2025/2026</div>
+            <div class="creator">[ CREATED BY: FAISHAL AMIR KHALLISH ]</div>
+        </div>
 
-    <div class="day">
-        <div class="day-title">SENIN</div>
-        <div class="schedule">
-            <div class="item">
-                <span class="jam">1</span>
-                <div class="waktu">06.30-07.15</div>
-                <div class="mapel">PA BP</div>
-                <div class="guru">Aan Andawiyah</div>
+        <div class="day-selector">
+            <button class="day-btn active" onclick="showDay('senin')">Senin</button>
+            <button class="day-btn" onclick="showDay('selasa')">Selasa</button>
+            <button class="day-btn" onclick="showDay('rabu')">Rabu</button>
+            <button class="day-btn" onclick="showDay('kamis')">Kamis</button>
+            <button class="day-btn" onclick="showDay('jumat')">Jumat</button>
+        </div>
+
+        <!-- SENIN -->
+        <div id="senin" class="schedule-card active">
+            <div class="lesson">
+                <span class="lesson-number">1</span>
+                <div class="lesson-time">07.15 - 07.55</div>
+                <div class="lesson-subject">PA BP</div>
+                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
             </div>
-            <div class="item">
-                <span class="jam">2</span>
-                <div class="waktu">07.55-08.35</div>
-                <div class="mapel">PA BP</div>
-                <div class="guru">Aan Andawiyah</div>
+            <div class="lesson">
+                <span class="lesson-number">2</span>
+                <div class="lesson-time">07.55 - 08.35</div>
+                <div class="lesson-subject">PA BP</div>
+                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
             </div>
-            <div class="item">
-                <span class="jam">3</span>
-                <div class="waktu">08.35-09.15</div>
-                <div class="mapel">IPS</div>
-                <div class="guru">Purnia</div>
+            <div class="lesson">
+                <span class="lesson-number">3</span>
+                <div class="lesson-time">08.35 - 09.15</div>
+                <div class="lesson-subject">IPS</div>
+                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
             </div>
-            <div class="item">
-                <span class="jam">4</span>
-                <div class="waktu">09.15-09.55</div>
-                <div class="mapel">IPS</div>
-                <div class="guru">Purnia</div>
+            <div class="lesson">
+                <span class="lesson-number">4</span>
+                <div class="lesson-time">09.15 - 09.55</div>
+                <div class="lesson-subject">IPS</div>
+                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
             </div>
-            <div class="istirahat">ISTIRAHAT</div>
-            <div class="item">
-                <span class="jam">5</span>
-                <div class="waktu">10.25-11.05</div>
-                <div class="mapel">B. Sunda</div>
-                <div class="guru">Winwin Wirdanigslh</div>
+            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
+            <div class="lesson">
+                <span class="lesson-number">5</span>
+                <div class="lesson-time">10.25 - 11.05</div>
+                <div class="lesson-subject">B. Sunda</div>
+                <div class="lesson-teacher">35. M. Widaningsih, S.S.</div>
             </div>
-            <div class="item">
-                <span class="jam">6</span>
-                <div class="waktu">11.05-11.45</div>
-                <div class="mapel">B. Indonesia</div>
-                <div class="guru">Adah</div>
+            <div class="lesson">
+                <span class="lesson-number">6</span>
+                <div class="lesson-time">11.05 - 11.45</div>
+                <div class="lesson-subject">B. Indonesia</div>
+                <div class="lesson-teacher">20. Adah, S.Pd.</div>
             </div>
-            <div class="istirahat">ISHOMA</div>
-            <div class="item">
-                <span class="jam">7</span>
-                <div class="waktu">12.35-13.15</div>
-                <div class="mapel">B. Indonesia</div>
-                <div class="guru">Adah</div>
+            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
+            <div class="lesson">
+                <span class="lesson-number">7</span>
+                <div class="lesson-time">12.35 - 13.15</div>
+                <div class="lesson-subject">B. Indonesia</div>
+                <div class="lesson-teacher">20. Adah, S.Pd.</div>
             </div>
+            <div class="total-lessons">📊 TOTAL: 7 Jam Pelajaran</div>
+        </div>
+
+        <!-- SELASA -->
+        <div id="selasa" class="schedule-card">
+            <div class="lesson">
+                <span class="lesson-number">1</span>
+                <div class="lesson-time">07.15 - 07.55</div>
+                <div class="lesson-subject">Baca Tulis Qur'an</div>
+                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">2</span>
+                <div class="lesson-time">07.55 - 08.35</div>
+                <div class="lesson-subject">B. Inggris</div>
+                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">3</span>
+                <div class="lesson-time">08.35 - 09.15</div>
+                <div class="lesson-subject">IPA</div>
+                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">4</span>
+                <div class="lesson-time">09.15 - 09.55</div>
+                <div class="lesson-subject">IPA</div>
+                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
+            <div class="lesson">
+                <span class="lesson-number">5</span>
+                <div class="lesson-time">10.25 - 11.05</div>
+                <div class="lesson-subject">Informatika</div>
+                <div class="lesson-teacher">26. Mujianto, S.Kom.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">6</span>
+                <div class="lesson-time">11.05 - 11.45</div>
+                <div class="lesson-subject">Informatika</div>
+                <div class="lesson-teacher">26. Mujianto, S.Kom.</div>
+            </div>
+            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
+            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
+        </div>
+
+        <!-- RABU -->
+        <div id="rabu" class="schedule-card">
+            <div class="lesson">
+                <span class="lesson-number">1</span>
+                <div class="lesson-time">07.15 - 07.55</div>
+                <div class="lesson-subject">B. Indonesia</div>
+                <div class="lesson-teacher">20. Adah, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">2</span>
+                <div class="lesson-time">07.55 - 08.35</div>
+                <div class="lesson-subject">Matematika</div>
+                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">3</span>
+                <div class="lesson-time">08.35 - 09.15</div>
+                <div class="lesson-subject">Matematika</div>
+                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">4</span>
+                <div class="lesson-time">09.15 - 09.55</div>
+                <div class="lesson-subject">Pend. Pancasila</div>
+                <div class="lesson-teacher">23. Marlita Sutiawati, SH.</div>
+            </div>
+            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
+            <div class="lesson">
+                <span class="lesson-number">5</span>
+                <div class="lesson-time">10.25 - 11.05</div>
+                <div class="lesson-subject">Pend. Pancasila</div>
+                <div class="lesson-teacher">23. Marlita Sutiawati, SH.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">6</span>
+                <div class="lesson-time">11.05 - 11.45</div>
+                <div class="lesson-subject">Prakarya</div>
+                <div class="lesson-teacher">12. Hj. Surandini Wahyu, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
+            <div class="lesson">
+                <span class="lesson-number">7</span>
+                <div class="lesson-time">12.35 - 13.15</div>
+                <div class="lesson-subject">Prakarya</div>
+                <div class="lesson-teacher">12. Hj. Surandini Wahyu, S.Pd.</div>
+            </div>
+            <div class="total-lessons">📊 TOTAL: 7 Jam Pelajaran</div>
+        </div>
+
+        <!-- KAMIS -->
+        <div id="kamis" class="schedule-card">
+            <div class="lesson">
+                <span class="lesson-number">1</span>
+                <div class="lesson-time">07.15 - 07.55</div>
+                <div class="lesson-subject">PJOK</div>
+                <div class="lesson-teacher">39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">2</span>
+                <div class="lesson-time">07.55 - 08.35</div>
+                <div class="lesson-subject">PJOK</div>
+                <div class="lesson-teacher">39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">3</span>
+                <div class="lesson-time">08.35 - 09.15</div>
+                <div class="lesson-subject">BK</div>
+                <div class="lesson-teacher">11. Dra. Rr. Rita Puspita</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">4</span>
+                <div class="lesson-time">09.15 - 09.55</div>
+                <div class="lesson-subject">IPS</div>
+                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
+            <div class="lesson">
+                <span class="lesson-number">5</span>
+                <div class="lesson-time">10.25 - 11.05</div>
+                <div class="lesson-subject">Matematika</div>
+                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">6</span>
+                <div class="lesson-time">11.05 - 11.45</div>
+                <div class="lesson-subject">Matematika</div>
+                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
+            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
+        </div>
+
+        <!-- JUMAT -->
+        <div id="jumat" class="schedule-card">
+            <div class="lesson">
+                <span class="lesson-number">1</span>
+                <div class="lesson-time">07.15 - 07.55</div>
+                <div class="lesson-subject">B. Indonesia</div>
+                <div class="lesson-teacher">20. Adah, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">2</span>
+                <div class="lesson-time">07.55 - 08.35</div>
+                <div class="lesson-subject">B. Indonesia</div>
+                <div class="lesson-teacher">20. Adah, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">3</span>
+                <div class="lesson-time">08.35 - 09.15</div>
+                <div class="lesson-subject">IPA</div>
+                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">4</span>
+                <div class="lesson-time">09.15 - 09.55</div>
+                <div class="lesson-subject">IPA</div>
+                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
+            <div class="lesson">
+                <span class="lesson-number">5</span>
+                <div class="lesson-time">10.25 - 11.05</div>
+                <div class="lesson-subject">B. Inggris</div>
+                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
+            </div>
+            <div class="lesson">
+                <span class="lesson-number">6</span>
+                <div class="lesson-time">11.05 - 11.45</div>
+                <div class="lesson-subject">B. Inggris</div>
+                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
+            </div>
+            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
+            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
         </div>
     </div>
 
-    <div class="day">
-        <div class="day-title">SELASA</div>
-        <div class="schedule">
-            <div class="item">
-                <span class="jam">1</span>
-                <div class="waktu">06.30-07.15</div>
-                <div class="mapel">BTQ</div>
-                <div class="guru">Aan Andawiyah</div>
-            </div>
-            <div class="item">
-                <span class="jam">2</span>
-                <div class="waktu">07.55-08.35</div>
-                <div class="mapel">B. Inggris</div>
-                <div class="guru">Anani Mulyani</div>
-            </div>
-            <div class="item">
-                <span class="jam">3</span>
-                <div class="waktu">08.35-09.15</div>
-                <div class="mapel">IPA</div>
-                <div class="guru">Anjar Bayu</div>
-            </div>
-            <div class="item">
-                <span class="jam">4</span>
-                <div class="waktu">09.15-09.55</div>
-                <div class="mapel">IPA</div>
-                <div class="guru">Anjar Bayu</div>
-            </div>
-            <div class="istirahat">ISTIRAHAT</div>
-            <div class="item">
-                <span class="jam">5</span>
-                <div class="waktu">10.25-11.05</div>
-                <div class="mapel">Informatika</div>
-                <div class="guru">Mujianto</div>
-            </div>
-            <div class="item">
-                <span class="jam">6</span>
-                <div class="waktu">11.05-11.45</div>
-                <div class="mapel">Informatika</div>
-                <div class="guru">Mujianto</div>
-            </div>
-            <div class="istirahat">ISHOMA</div>
-        </div>
-    </div>
+    <div class="robot-corner">🤖</div>
 
-    <div class="day">
-        <div class="day-title">RABU</div>
-        <div class="schedule">
-            <div class="item">
-                <span class="jam">1</span>
-                <div class="waktu">06.30-07.15</div>
-                <div class="mapel">B. Indonesia</div>
-                <div class="guru">Adah</div>
-            </div>
-            <div class="item">
-                <span class="jam">2</span>
-                <div class="waktu">07.55-08.35</div>
-                <div class="mapel">Matematika</div>
-                <div class="guru">Ida Susanti</div>
-            </div>
-            <div class="item">
-                <span class="jam">3</span>
-                <div class="waktu">08.35-09.15</div>
-                <div class="mapel">Matematika</div>
-                <div class="guru">Ida Susanti</div>
-            </div>
-            <div class="item">
-                <span class="jam">4</span>
-                <div class="waktu">09.15-09.55</div>
-                <div class="mapel">P. Pancasila</div>
-                <div class="guru">Marlita Sutiawati</div>
-            </div>
-            <div class="istirahat">ISTIRAHAT</div>
-            <div class="item">
-                <span class="jam">5</span>
-                <div class="waktu">10.25-11.05</div>
-                <div class="mapel">P. Pancasila</div>
-                <div class="guru">Marlita Sutiawati</div>
-            </div>
-            <div class="item">
-                <span class="jam">6</span>
-                <div class="waktu">11.05-11.45</div>
-                <div class="mapel">Prakarya</div>
-                <div class="guru">Surandini Wahyu</div>
-            </div>
-            <div class="istirahat">ISHOMA</div>
-            <div class="item">
-                <span class="jam">7</span>
-                <div class="waktu">12.35-13.15</div>
-                <div class="mapel">Prakarya</div>
-                <div class="guru">Surandini Wahyu</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="day">
-        <div class="day-title">KAMIS</div>
-        <div class="schedule">
-            <div class="item">
-                <span class="jam">1</span>
-                <div class="waktu">06.30-07.15</div>
-                <div class="mapel">PJOK</div>
-                <div class="guru">Hasbi Hadi</div>
-            </div>
-            <div class="item">
-                <span class="jam">2</span>
-                <div class="waktu">07.55-08.35</div>
-                <div class="mapel">PJOK</div>
-                <div class="guru">Hasbi Hadi</div>
-            </div>
-            <div class="item">
-                <span class="jam">3</span>
-                <div class="waktu">08.35-09.15</div>
-                <div class="mapel">BK</div>
-                <div class="guru">Rita Puspita</div>
-            </div>
-            <div class="item">
-                <span class="jam">4</span>
-                <div class="waktu">09.15-09.55</div>
-                <div class="mapel">IPS</div>
-                <div class="guru">Purnia</div>
-            </div>
-            <div class="istirahat">ISTIRAHAT</div>
-            <div class="item">
-                <span class="jam">5</span>
-                <div class="waktu">10.25-11.05</div>
-                <div class="mapel">Matematika</div>
-                <div class="guru">Ida Susanti</div>
-            </div>
-            <div class="item">
-                <span class="jam">6</span>
-                <div class="waktu">11.05-11.45</div>
-                <div class="mapel">Matematika</div>
-                <div class="guru">Ida Susanti</div>
-            </div>
-            <div class="istirahat">ISHOMA</div>
-        </div>
-    </div>
-
-    <div class="day">
-        <div class="day-title">JUMAT</div>
-        <div class="schedule">
-            <div class="item">
-                <span class="jam">1</span>
-                <div class="waktu">06.30-07.15</div>
-                <div class="mapel">B. Indonesia</div>
-                <div class="guru">Adah</div>
-            </div>
-            <div class="item">
-                <span class="jam">2</span>
-                <div class="waktu">07.55-08.35</div>
-                <div class="mapel">B. Indonesia</div>
-                <div class="guru">Adah</div>
-            </div>
-            <div class="item">
-                <span class="jam">3</span>
-                <div class="waktu">08.35-09.15</div>
-                <div class="mapel">IPA</div>
-                <div class="guru">Anjar Bayu</div>
-            </div>
-            <div class="item">
-                <span class="jam">4</span>
-                <div class="waktu">09.15-09.55</div>
-                <div class="mapel">IPA</div>
-                <div class="guru">Anjar Bayu</div>
-            </div>
-            <div class="istirahat">ISTIRAHAT</div>
-            <div class="item">
-                <span class="jam">5</span>
-                <div class="waktu">10.25-11.05</div>
-                <div class="mapel">B. Inggris</div>
-                <div class="guru">Anani Mulyani</div>
-            </div>
-            <div class="item">
-                <span class="jam">6</span>
-                <div class="waktu">11.05-11.45</div>
-                <div class="mapel">B. Inggris</div>
-                <div class="guru">Anani Mulyani</div>
-            </div>
-            <div class="istirahat">ISHOMA</div>
-        </div>
-    </div>
-
-    <div class="footer">
-        Website by: Faishal Amir Khalish
-    </div>
+    <script>
+        function showDay(day) {
+            const cards = document.querySelectorAll('.schedule-card');
+            const buttons = document.querySelectorAll('.day-btn');
+            
+            cards.forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(day).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>
