@@ -1,495 +1,533 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Kelas 8A - 2025/2026</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+import React, { useState, useEffect } from 'react';
+import { Calendar, Clock, BookOpen, Cpu, Bell, CheckCircle, Circle, Star, Moon, Sun, Music, Award, Search, List, TrendingUp, Zap, Battery, Wifi } from 'lucide-react';
 
-        body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-            color: #00ff00;
-            min-height: 100vh;
-            padding: 10px;
-            position: relative;
-            overflow-x: hidden;
-        }
+const ScheduleApp = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState('Senin');
+  const [darkMode, setDarkMode] = useState(true);
+  const [themeColor, setThemeColor] = useState('cyan');
+  const [completedClasses, setCompletedClasses] = useState({});
+  const [favoriteSubjects, setFavoriteSubjects] = useState({});
+  const [notes, setNotes] = useState({});
+  const [showNotes, setShowNotes] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [musicOn, setMusicOn] = useState(false);
+  const [showStats, setShowStats] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [achievements, setAchievements] = useState([]);
+  const [notificationsOn, setNotificationsOn] = useState(true);
+  const [robotAnimation, setRobotAnimation] = useState(0);
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 0, 0.03) 2px, rgba(0, 255, 0, 0.03) 4px);
-            pointer-events: none;
-            z-index: 1;
-        }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+      setRobotAnimation(prev => (prev + 1) % 360);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            position: relative;
-            z-index: 2;
-        }
+  const schedule = {
+    'Senin': [
+      { time: '07.15-07.55', subject: 'PA BP', teacher: '25. Aan Andawiyah, S.Ag.' },
+      { time: '07.55-08.35', subject: 'PA BP', teacher: '25. Aan Andawiyah, S.Ag.' },
+      { time: '08.35-09.15', subject: 'IPS', teacher: '05. Purnia, S.Pd.' },
+      { time: '09.15-09.55', subject: 'IPS', teacher: '05. Purnia, S.Pd.' },
+      { time: '09.55-10.25', subject: 'Istirahat I', teacher: '' },
+      { time: '10.25-11.05', subject: 'B. Sunda', teacher: '35. Hj. Widaningsih, S.S.' },
+      { time: '11.05-11.45', subject: 'B. Indonesia', teacher: '20. Adah, S.Pd.' },
+      { time: '11.45-12.35', subject: 'Ishoma + MBG', teacher: '' },
+      { time: '12.35-13.15', subject: 'B. Indonesia', teacher: '20. Adah, S.Pd.' }
+    ],
+    'Selasa': [
+      { time: '07.15-07.55', subject: 'Baca Tulis Qur\'an', teacher: '25. Aan Andawiyah, S.Ag.' },
+      { time: '07.55-08.35', subject: 'B. Inggris', teacher: '09. Hj. Anani Mulyani, S.Pd.' },
+      { time: '08.35-09.15', subject: 'IPA', teacher: '37. Anjar Bayu Kuncoro, S.Pd.' },
+      { time: '09.15-09.55', subject: 'IPA', teacher: '37. Anjar Bayu Kuncoro, S.Pd.' },
+      { time: '09.55-10.25', subject: 'Istirahat I', teacher: '' },
+      { time: '10.25-11.05', subject: 'Informatika', teacher: '26. Mujianto, S.Kom.' },
+      { time: '11.05-11.45', subject: 'Informatika', teacher: '26. Mujianto, S.Kom.' },
+      { time: '11.45-12.35', subject: 'Ishoma + MBG', teacher: '' }
+    ],
+    'Rabu': [
+      { time: '07.15-07.55', subject: 'B. Indonesia', teacher: '20. Adah, S.Pd.' },
+      { time: '07.55-08.35', subject: 'Matematika', teacher: '19. Ida Susanti, S.Pd.' },
+      { time: '08.35-09.15', subject: 'Matematika', teacher: '19. Ida Susanti, S.Pd.' },
+      { time: '09.15-09.55', subject: 'Pend. Pancasila', teacher: '23. Marlita Sutiawati, SH.' },
+      { time: '09.55-10.25', subject: 'Istirahat I', teacher: '' },
+      { time: '10.25-11.05', subject: 'Pend. Pancasila', teacher: '23. Marlita Sutiawati, SH.' },
+      { time: '11.05-11.45', subject: 'Prakarya', teacher: '12. Hj. Surandini Wahyu, S.Pd.' },
+      { time: '11.45-12.35', subject: 'Ishoma + MBG', teacher: '' },
+      { time: '12.35-13.15', subject: 'Prakarya', teacher: '12. Hj. Surandini Wahyu, S.Pd.' }
+    ],
+    'Kamis': [
+      { time: '07.15-07.55', subject: 'PJOK', teacher: '39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.' },
+      { time: '07.55-08.35', subject: 'PJOK', teacher: '39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.' },
+      { time: '08.35-09.15', subject: 'BK', teacher: '11. Dra. Hj. Rita Puspita' },
+      { time: '09.15-09.55', subject: 'IPS', teacher: '05. Purnia, S.Pd.' },
+      { time: '09.55-10.25', subject: 'Istirahat I', teacher: '' },
+      { time: '10.25-11.05', subject: 'Matematika', teacher: '19. Ida Susanti, S.Pd.' },
+      { time: '11.05-11.45', subject: 'Matematika', teacher: '19. Ida Susanti, S.Pd.' },
+      { time: '11.45-12.35', subject: 'Ishoma + MBG', teacher: '' }
+    ],
+    'Jumat': [
+      { time: '07.15-07.55', subject: 'B. Indonesia', teacher: '20. Adah, S.Pd.' },
+      { time: '07.55-08.35', subject: 'B. Indonesia', teacher: '20. Adah, S.Pd.' },
+      { time: '08.35-09.15', subject: 'IPA', teacher: '37. Anjar Bayu Kuncoro, S.Pd.' },
+      { time: '09.15-09.55', subject: 'IPA', teacher: '37. Anjar Bayu Kuncoro, S.Pd.' },
+      { time: '09.55-10.25', subject: 'Istirahat I', teacher: '' },
+      { time: '10.25-11.05', subject: 'B. Inggris', teacher: '09. Hj. Anani Mulyani, S.Pd.' },
+      { time: '11.05-11.45', subject: 'B. Inggris', teacher: '09. Hj. Anani Mulyani, S.Pd.' },
+      { time: '11.45-12.45', subject: 'Ishoma + MBG', teacher: '' }
+    ]
+  };
 
-        .header {
-            text-align: center;
-            padding: 20px 10px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid #00ff00;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-            animation: glow 2s ease-in-out infinite;
-        }
+  const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(0, 255, 0, 0.5); }
-        }
+  const themes = {
+    cyan: { from: 'from-cyan-500', to: 'to-purple-600', bg: 'bg-cyan-500', text: 'text-cyan-400' },
+    red: { from: 'from-red-500', to: 'to-orange-600', bg: 'bg-red-500', text: 'text-red-400' },
+    green: { from: 'from-green-500', to: 'to-emerald-600', bg: 'bg-green-500', text: 'text-green-400' },
+    blue: { from: 'from-blue-500', to: 'to-indigo-600', bg: 'bg-blue-500', text: 'text-blue-400' },
+    pink: { from: 'from-pink-500', to: 'to-rose-600', bg: 'bg-pink-500', text: 'text-pink-400' }
+  };
 
-        .header h1 {
-            font-size: 20px;
-            color: #00ff00;
-            text-shadow: 0 0 10px #00ff00;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-        }
+  const currentTheme = themes[themeColor];
 
-        .header h2 {
-            font-size: 16px;
-            color: #00ccff;
-            text-shadow: 0 0 8px #00ccff;
-            margin-bottom: 10px;
-        }
+  const toggleComplete = (day, index) => {
+    const key = `${day}-${index}`;
+    const newCompleted = { ...completedClasses, [key]: !completedClasses[key] };
+    setCompletedClasses(newCompleted);
+    if (!completedClasses[key]) {
+      setPoints(points + 10);
+      checkAchievements(points + 10);
+    }
+  };
 
-        .creator {
-            font-size: 11px;
-            color: #ffff00;
-            text-shadow: 0 0 5px #ffff00;
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
+  const toggleFavorite = (day, index) => {
+    const key = `${day}-${index}`;
+    setFavoriteSubjects({ ...favoriteSubjects, [key]: !favoriteSubjects[key] });
+  };
 
-        .day-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-            justify-content: center;
-        }
+  const checkAchievements = (currentPoints) => {
+    const newAchievements = [];
+    if (currentPoints >= 50 && !achievements.includes('Pemula')) newAchievements.push('Pemula');
+    if (currentPoints >= 100 && !achievements.includes('Rajin')) newAchievements.push('Rajin');
+    if (currentPoints >= 200 && !achievements.includes('Master')) newAchievements.push('Master');
+    if (newAchievements.length > 0) {
+      setAchievements([...achievements, ...newAchievements]);
+    }
+  };
 
-        .day-btn {
-            flex: 1;
-            min-width: 60px;
-            padding: 12px 8px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #00ff00;
-            color: #00ff00;
-            cursor: pointer;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            font-weight: bold;
-            transition: all 0.3s;
-            border-radius: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+  const getCurrentClass = () => {
+    const now = currentTime.toTimeString().slice(0, 5);
+    const todaySchedule = schedule[selectedDay] || [];
+    return todaySchedule.findIndex(item => {
+      const [start, end] = item.time.split('-');
+      return now >= start && now <= end;
+    });
+  };
 
-        .day-btn:active, .day-btn.active {
-            background: #00ff00;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
-            transform: scale(0.95);
-        }
+  const getNextClass = () => {
+    const currentIndex = getCurrentClass();
+    if (currentIndex >= 0 && currentIndex < schedule[selectedDay].length - 1) {
+      return schedule[selectedDay][currentIndex + 1];
+    }
+    return null;
+  };
 
-        .schedule-card {
-            display: none;
-            animation: slideIn 0.5s ease-out;
-        }
+  const filteredSchedule = schedule[selectedDay].filter(item => 
+    item.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.teacher.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-        .schedule-card.active {
-            display: block;
-        }
+  const totalClasses = Object.keys(schedule).reduce((acc, day) => 
+    acc + schedule[day].filter(item => !item.subject.includes('Istirahat') && !item.subject.includes('Ishoma')).length, 0
+  );
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  const completedCount = Object.values(completedClasses).filter(Boolean).length;
 
-        .lesson {
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #00ff00;
-            border-left: 5px solid #00ff00;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
-            transition: all 0.3s;
-        }
+  return (
+    <div className={`min-h-screen ${darkMode ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900' : 'bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100'} p-4 transition-all duration-500`}>
+      {/* Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className={`absolute top-20 left-20 w-72 h-72 ${currentTheme.bg} rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse`}></div>
+        <div className="absolute top-40 right-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '1s'}}></div>
+        <div className="absolute bottom-20 left-40 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{animationDelay: '2s'}}></div>
+        
+        {/* Floating Particles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute w-2 h-2 ${currentTheme.bg} rounded-full opacity-30`}
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `float ${3 + Math.random() * 3}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
 
-        .lesson:hover {
-            border-color: #00ccff;
-            border-left-color: #00ccff;
-            box-shadow: 0 0 25px rgba(0, 204, 255, 0.4);
-            transform: translateX(5px);
-        }
-
-        .lesson-number {
-            display: inline-block;
-            background: #00ff00;
-            color: #000;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            text-align: center;
-            border-radius: 50%;
-            font-weight: bold;
-            margin-right: 10px;
-            font-size: 14px;
-        }
-
-        .lesson-time {
-            color: #ffff00;
-            font-size: 13px;
-            font-weight: bold;
-            text-shadow: 0 0 5px #ffff00;
-        }
-
-        .lesson-subject {
-            color: #00ccff;
-            font-size: 15px;
-            font-weight: bold;
-            margin: 8px 0;
-            text-shadow: 0 0 8px #00ccff;
-        }
-
-        .lesson-teacher {
-            color: #ff00ff;
-            font-size: 12px;
-            text-shadow: 0 0 5px #ff00ff;
-        }
-
-        .break-time {
-            background: rgba(255, 255, 0, 0.1);
-            border: 2px dashed #ffff00;
-            padding: 12px;
-            margin-bottom: 15px;
-            text-align: center;
-            border-radius: 8px;
-            color: #ffff00;
-            font-weight: bold;
-            text-shadow: 0 0 10px #ffff00;
-        }
-
-        .total-lessons {
-            background: rgba(0, 0, 0, 0.9);
-            border: 2px solid #ff00ff;
-            padding: 15px;
-            text-align: center;
-            border-radius: 8px;
-            margin-top: 20px;
-            color: #ff00ff;
-            font-weight: bold;
-            font-size: 14px;
-            text-shadow: 0 0 10px #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-        }
-
-        .robot-corner {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            font-size: 40px;
-            animation: float 3s ease-in-out infinite;
-            z-index: 1000;
-            filter: drop-shadow(0 0 10px #00ff00);
-        }
-
+      <style>{`
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>⚡ JADWAL PELAJARAN ⚡</h1>
-            <h2>KELAS 8A</h2>
-            <div style="font-size: 12px; color: #00ff00;">TAHUN PELAJARAN 2025/2026</div>
-            <div class="creator">[ CREATED BY: FAISHAL AMIR KHALLISH ]</div>
+        @keyframes rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
+
+      {/* Header */}
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className={`${darkMode ? 'bg-gradient-to-r from-cyan-500/20 to-purple-500/20' : 'bg-white/80'} backdrop-blur-lg rounded-3xl p-6 mb-6 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} shadow-2xl`}>
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className={`bg-gradient-to-br ${currentTheme.from} ${currentTheme.to} p-4 rounded-2xl shadow-lg`} style={{animation: 'bounce-slow 2s infinite'}}>
+                <Cpu className="w-8 h-8 text-white" style={{transform: `rotate(${robotAnimation}deg)`, transition: 'transform 1s linear'}} />
+              </div>
+              <div>
+                <h1 className={`text-3xl font-bold ${darkMode ? 'text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400' : 'text-purple-900'}`}>
+                  ROBOT SCHEDULER PRO
+                </h1>
+                <p className={`${darkMode ? 'text-cyan-300' : 'text-purple-700'} text-sm flex items-center gap-2`}>
+                  <Zap className="w-4 h-4" /> Kelas 8A • Tahun 2025/2026
+                </p>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Points & Level */}
+              <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} px-4 py-2 rounded-xl border ${darkMode ? 'border-yellow-500/30' : 'border-yellow-600'} flex items-center gap-2`}>
+                <Award className="w-5 h-5 text-yellow-400" />
+                <span className={`${darkMode ? 'text-yellow-300' : 'text-yellow-700'} font-bold`}>{points} XP</span>
+              </div>
+              
+              {/* Clock */}
+              <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} px-6 py-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'}`}>
+                <div className={`flex items-center gap-2 ${currentTheme.text}`}>
+                  <Clock className="w-5 h-5" />
+                  <span className="font-mono text-lg">{currentTime.toLocaleTimeString('id-ID')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Control Panel */}
+          <div className="mt-4 flex items-center gap-2 flex-wrap">
+            <button onClick={() => setDarkMode(!darkMode)} className={`${darkMode ? 'bg-slate-800/50' : 'bg-white/60'} p-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} hover:scale-110 transition-transform`}>
+              {darkMode ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-purple-600" />}
+            </button>
+            
+            {Object.keys(themes).map(color => (
+              <button key={color} onClick={() => setThemeColor(color)} className={`w-10 h-10 rounded-xl ${themes[color].bg} ${themeColor === color ? 'ring-4 ring-white scale-110' : ''} transition-all hover:scale-110`} />
+            ))}
+            
+            <button onClick={() => setMusicOn(!musicOn)} className={`${darkMode ? 'bg-slate-800/50' : 'bg-white/60'} p-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} hover:scale-110 transition-transform`}>
+              <Music className={`w-5 h-5 ${musicOn ? 'text-green-400' : darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+            </button>
+            
+            <button onClick={() => setNotificationsOn(!notificationsOn)} className={`${darkMode ? 'bg-slate-800/50' : 'bg-white/60'} p-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} hover:scale-110 transition-transform`}>
+              <Bell className={`w-5 h-5 ${notificationsOn ? 'text-green-400' : darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+            </button>
+            
+            <button onClick={() => setShowStats(!showStats)} className={`${darkMode ? 'bg-slate-800/50' : 'bg-white/60'} p-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} hover:scale-110 transition-transform`}>
+              <TrendingUp className={`w-5 h-5 ${darkMode ? 'text-cyan-400' : 'text-purple-600'}`} />
+            </button>
+
+            <button onClick={() => setShowNotes(!showNotes)} className={`${darkMode ? 'bg-slate-800/50' : 'bg-white/60'} p-3 rounded-xl border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} hover:scale-110 transition-transform`}>
+              <List className={`w-5 h-5 ${darkMode ? 'text-cyan-400' : 'text-purple-600'}`} />
+            </button>
+          </div>
         </div>
 
-        <div class="day-selector">
-            <button class="day-btn active" onclick="showDay('senin')">Senin</button>
-            <button class="day-btn" onclick="showDay('selasa')">Selasa</button>
-            <button class="day-btn" onclick="showDay('rabu')">Rabu</button>
-            <button class="day-btn" onclick="showDay('kamis')">Kamis</button>
-            <button class="day-btn" onclick="showDay('jumat')">Jumat</button>
+        {/* Stats Panel */}
+        {showStats && (
+          <div className={`${darkMode ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-lg rounded-2xl p-6 mb-6 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'}`}>
+            <h3 className={`text-xl font-bold ${darkMode ? 'text-cyan-400' : 'text-purple-900'} mb-4 flex items-center gap-2`}>
+              <TrendingUp className="w-6 h-6" /> Statistik & Progress
+            </h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className={`${darkMode ? 'bg-gradient-to-br from-green-500/20 to-emerald-500/20 border-green-500/30' : 'bg-green-100 border-green-300'} p-4 rounded-xl border`}>
+                <div className="text-2xl font-bold text-green-400">{completedCount}</div>
+                <div className={`text-sm ${darkMode ? 'text-green-300' : 'text-green-700'}`}>Kelas Selesai</div>
+              </div>
+              <div className={`${darkMode ? 'bg-gradient-to-br from-blue-500/20 to-indigo-500/20 border-blue-500/30' : 'bg-blue-100 border-blue-300'} p-4 rounded-xl border`}>
+                <div className="text-2xl font-bold text-blue-400">{totalClasses}</div>
+                <div className={`text-sm ${darkMode ? 'text-blue-300' : 'text-blue-700'}`}>Total Kelas</div>
+              </div>
+              <div className={`${darkMode ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/30' : 'bg-yellow-100 border-yellow-300'} p-4 rounded-xl border`}>
+                <div className="text-2xl font-bold text-yellow-400">{points}</div>
+                <div className={`text-sm ${darkMode ? 'text-yellow-300' : 'text-yellow-700'}`}>Total XP</div>
+              </div>
+              <div className={`${darkMode ? 'bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-500/30' : 'bg-purple-100 border-purple-300'} p-4 rounded-xl border`}>
+                <div className="text-2xl font-bold text-purple-400">{achievements.length}</div>
+                <div className={`text-sm ${darkMode ? 'text-purple-300' : 'text-purple-700'}`}>Achievements</div>
+              </div>
+            </div>
+            
+            {/* Progress Bar */}
+            <div className="mt-4">
+              <div className="flex justify-between mb-2">
+                <span className={`text-sm ${darkMode ? 'text-cyan-300' : 'text-purple-700'}`}>Progress Keseluruhan</span>
+                <span className={`text-sm font-bold ${darkMode ? 'text-cyan-400' : 'text-purple-900'}`}>{Math.round((completedCount / totalClasses) * 100)}%</span>
+              </div>
+              <div className={`w-full ${darkMode ? 'bg-slate-800' : 'bg-gray-200'} rounded-full h-4 overflow-hidden`}>
+                <div className={`h-full bg-gradient-to-r ${currentTheme.from} ${currentTheme.to} transition-all duration-500`} style={{width: `${(completedCount / totalClasses) * 100}%`}}></div>
+              </div>
+            </div>
+
+            {/* Achievements */}
+            {achievements.length > 0 && (
+              <div className="mt-4">
+                <h4 className={`text-sm font-bold ${darkMode ? 'text-cyan-400' : 'text-purple-900'} mb-2`}>🏆 Achievements Unlocked:</h4>
+                <div className="flex gap-2 flex-wrap">
+                  {achievements.map((achievement, i) => (
+                    <span key={i} className={`${darkMode ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' : 'bg-yellow-100 text-yellow-700 border-yellow-300'} px-3 py-1 rounded-full text-sm font-semibold border`}>
+                      {achievement}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Current Class Alert */}
+        {getCurrentClass() >= 0 && (
+          <div className={`${darkMode ? 'bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-green-500/30' : 'bg-green-100 border-green-300'} backdrop-blur-lg rounded-2xl p-4 mb-6 border animate-pulse`}>
+            <div className="flex items-center gap-3">
+              <Zap className="w-6 h-6 text-green-400" />
+              <div>
+                <p className={`font-bold ${darkMode ? 'text-green-300' : 'text-green-800'}`}>🎯 Sedang Berlangsung:</p>
+                <p className={`${darkMode ? 'text-green-400' : 'text-green-900'} text-lg font-bold`}>{schedule[selectedDay][getCurrentClass()].subject}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Search Bar */}
+        <div className={`${darkMode ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-lg rounded-2xl p-4 mb-6 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'}`}>
+          <div className="flex items-center gap-3">
+            <Search className={`w-5 h-5 ${darkMode ? 'text-cyan-400' : 'text-purple-600'}`} />
+            <input
+              type="text"
+              placeholder="Cari mata pelajaran atau guru..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={`flex-1 ${darkMode ? 'bg-transparent text-cyan-300 placeholder-cyan-500/50' : 'bg-transparent text-purple-900 placeholder-purple-500/50'} outline-none text-lg`}
+            />
+          </div>
         </div>
 
-        <!-- SENIN -->
-        <div id="senin" class="schedule-card active">
-            <div class="lesson">
-                <span class="lesson-number">1</span>
-                <div class="lesson-time">07.15 - 07.55</div>
-                <div class="lesson-subject">PA BP</div>
-                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">2</span>
-                <div class="lesson-time">07.55 - 08.35</div>
-                <div class="lesson-subject">PA BP</div>
-                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">3</span>
-                <div class="lesson-time">08.35 - 09.15</div>
-                <div class="lesson-subject">IPS</div>
-                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">4</span>
-                <div class="lesson-time">09.15 - 09.55</div>
-                <div class="lesson-subject">IPS</div>
-                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
-            <div class="lesson">
-                <span class="lesson-number">5</span>
-                <div class="lesson-time">10.25 - 11.05</div>
-                <div class="lesson-subject">B. Sunda</div>
-                <div class="lesson-teacher">35. M. Widaningsih, S.S.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">6</span>
-                <div class="lesson-time">11.05 - 11.45</div>
-                <div class="lesson-subject">B. Indonesia</div>
-                <div class="lesson-teacher">20. Adah, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
-            <div class="lesson">
-                <span class="lesson-number">7</span>
-                <div class="lesson-time">12.35 - 13.15</div>
-                <div class="lesson-subject">B. Indonesia</div>
-                <div class="lesson-teacher">20. Adah, S.Pd.</div>
-            </div>
-            <div class="total-lessons">📊 TOTAL: 7 Jam Pelajaran</div>
+        {/* Day Selector */}
+        <div className={`${darkMode ? 'bg-black/40' : 'bg-white/80'} backdrop-blur-lg rounded-2xl p-4 mb-6 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'}`}>
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {days.map((day) => (
+              <button
+                key={day}
+                onClick={() => setSelectedDay(day)}
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 whitespace-nowrap ${
+                  selectedDay === day
+                    ? `bg-gradient-to-r ${currentTheme.from} ${currentTheme.to} text-white shadow-lg scale-105`
+                    : darkMode 
+                      ? 'bg-slate-800/50 text-cyan-300 hover:bg-slate-700/50 border border-cyan-500/20'
+                      : 'bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-300'
+                }`}
+              >
+                {day}
+              </button>
+            ))}
+          </div>
         </div>
 
-        <!-- SELASA -->
-        <div id="selasa" class="schedule-card">
-            <div class="lesson">
-                <span class="lesson-number">1</span>
-                <div class="lesson-time">07.15 - 07.55</div>
-                <div class="lesson-subject">Baca Tulis Qur'an</div>
-                <div class="lesson-teacher">25. Aan Andawiyah, S.Ag.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">2</span>
-                <div class="lesson-time">07.55 - 08.35</div>
-                <div class="lesson-subject">B. Inggris</div>
-                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">3</span>
-                <div class="lesson-time">08.35 - 09.15</div>
-                <div class="lesson-subject">IPA</div>
-                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">4</span>
-                <div class="lesson-time">09.15 - 09.55</div>
-                <div class="lesson-subject">IPA</div>
-                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
-            <div class="lesson">
-                <span class="lesson-number">5</span>
-                <div class="lesson-time">10.25 - 11.05</div>
-                <div class="lesson-subject">Informatika</div>
-                <div class="lesson-teacher">26. Mujianto, S.Kom.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">6</span>
-                <div class="lesson-time">11.05 - 11.45</div>
-                <div class="lesson-subject">Informatika</div>
-                <div class="lesson-teacher">26. Mujianto, S.Kom.</div>
-            </div>
-            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
-            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
+        {/* Schedule Grid */}
+        <div className="space-y-3">
+          {filteredSchedule.map((item, index) => {
+            const key = `${selectedDay}-${index}`;
+            const isCompleted = completedClasses[key];
+            const isFavorite = favoriteSubjects[key];
+            const isBreak = item.subject === 'Istirahat I' || item.subject === 'Ishoma + MBG';
+            const isCurrent = getCurrentClass() === index;
+
+            return (
+              <div
+                key={index}
+                className={`backdrop-blur-lg rounded-2xl p-5 border shadow-xl transition-all duration-300 hover:scale-102 hover:shadow-2xl ${
+                  isBreak
+                    ? darkMode 
+                      ? 'bg-gradient-to-r from-orange-500/20 to-yellow-500/20 border-orange-500/30'
+                      : 'bg-gradient-to-r from-orange-100 to-yellow-100 border-orange-300'
+                    : isCurrent
+                      ? darkMode
+                        ? 'bg-gradient-to-r from-green-500/30 to-emerald-500/30 border-green-500/50 ring-4 ring-green-500/30'
+                        : 'bg-gradient-to-r from-green-100 to-emerald-100 border-green-400 ring-4 ring-green-300'
+                    : darkMode
+                      ? 'bg-gradient-to-r from-slate-800/60 to-slate-900/60 border-cyan-500/30 hover:border-purple-500/50'
+                      : 'bg-white/80 border-purple-300 hover:border-purple-500'
+                } ${isCompleted ? 'opacity-60' : ''}`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`bg-gradient-to-br ${currentTheme.from} ${currentTheme.to} p-3 rounded-xl min-w-fit`}>
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                      <span className={`${currentTheme.text} font-mono font-bold text-lg`}>
+                        {item.time}
+                      </span>
+                      {isBreak && (
+                        <span className={`${darkMode ? 'bg-orange-500/30 text-orange-300' : 'bg-orange-200 text-orange-700'} px-3 py-1 rounded-full text-xs font-semibold`}>
+                          BREAK
+                        </span>
+                      )}
+                      {isCurrent && !isBreak && (
+                        <span className={`${darkMode ? 'bg-green-500/30 text-green-300' : 'bg-green-200 text-green-700'} px-3 py-1 rounded-full text-xs font-semibold animate-pulse`}>
+                          SEDANG BERLANGSUNG
+                        </span>
+                      )}
+                      {isFavorite && (
+                        <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                      )}
+                    </div>
+                    <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-1 flex items-center gap-2`}>
+                      <BookOpen className={`w-5 h-5 ${darkMode ? 'text-purple-400' : 'text-purple-600'}`} />
+                      {item.subject}
+                    </h3>
+                    {item.teacher && (
+                      <p className={`${darkMode ? 'text-cyan-300' : 'text-purple-700'} text-sm mt-2 pl-7`}>
+                        👨‍🏫 {item.teacher}
+                      </p>
+                    )}
+                    
+                    {/* Notes Section */}
+                    {showNotes && notes[key] && (
+                      <div className={`mt-3 ${darkMode ? 'bg-yellow-500/10 border-yellow-500/30' : 'bg-yellow-50 border-yellow-300'} border rounded-lg p-3`}>
+                        <p className={`text-sm ${darkMode ? 'text-yellow-300' : 'text-yellow-800'}`}>📝 {notes[key]}</p>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Action Buttons */}
+                  {!isBreak && (
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => toggleComplete(selectedDay, index)}
+                        className={`p-2 rounded-lg transition-all hover:scale-110 ${
+                          isCompleted 
+                            ? darkMode ? 'bg-green-500/30' : 'bg-green-200' 
+                            : darkMode ? 'bg-slate-700/50' : 'bg-gray-200'
+                        }`}
+                      >
+                        {isCompleted ? (
+                          <CheckCircle className="w-6 h-6 text-green-400" />
+                        ) : (
+                          <Circle className={`w-6 h-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                        )}
+                      </button>
+                      
+                      <button
+                        onClick={() => toggleFavorite(selectedDay, index)}
+                        className={`p-2 rounded-lg transition-all hover:scale-110 ${
+                          isFavorite 
+                            ? darkMode ? 'bg-yellow-500/30' : 'bg-yellow-200' 
+                            : darkMode ? 'bg-slate-700/50' : 'bg-gray-200'
+                        }`}
+                      >
+                        <Star className={`w-6 h-6 ${isFavorite ? 'text-yellow-400 fill-yellow-400' : darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                      </button>
+                      
+                      {showNotes && (
+                        <button
+                          onClick={() => {
+                            const note = prompt('Masukkan catatan:', notes[key] || '');
+                            if (note !== null) {
+                              setNotes({ ...notes, [key]: note });
+                            }
+                          }}
+                          className={`p-2 rounded-lg transition-all hover:scale-110 ${
+                            notes[key] 
+                              ? darkMode ? 'bg-blue-500/30' : 'bg-blue-200' 
+                              : darkMode ? 'bg-slate-700/50' : 'bg-gray-200'
+                          }`}
+                        >
+                          <BookOpen className={`w-6 h-6 ${notes[key] ? 'text-blue-400' : darkMode ? 'text-gray-400' : 'text-gray-600'}`} />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  
+                  <div className="text-right">
+                    <div className={`${darkMode ? 'bg-purple-500/20 border-purple-500/30' : 'bg-purple-100 border-purple-300'} px-4 py-2 rounded-lg border`}>
+                      <span className={`${darkMode ? 'text-purple-300' : 'text-purple-700'} font-mono text-sm`}>
+                        #{index + 1}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
-        <!-- RABU -->
-        <div id="rabu" class="schedule-card">
-            <div class="lesson">
-                <span class="lesson-number">1</span>
-                <div class="lesson-time">07.15 - 07.55</div>
-                <div class="lesson-subject">B. Indonesia</div>
-                <div class="lesson-teacher">20. Adah, S.Pd.</div>
+        {/* Next Class Preview */}
+        {getNextClass() && (
+          <div className={`mt-6 ${darkMode ? 'bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border-blue-500/30' : 'bg-blue-100 border-blue-300'} backdrop-blur-lg rounded-2xl p-4 border`}>
+            <div className="flex items-center gap-3">
+              <Bell className="w-6 h-6 text-blue-400" />
+              <div>
+                <p className={`font-bold ${darkMode ? 'text-blue-300' : 'text-blue-800'}`}>⏭️ Pelajaran Berikutnya:</p>
+                <p className={`${darkMode ? 'text-blue-400' : 'text-blue-900'} text-lg font-bold`}>
+                  {getNextClass().subject} • {getNextClass().time}
+                </p>
+              </div>
             </div>
-            <div class="lesson">
-                <span class="lesson-number">2</span>
-                <div class="lesson-time">07.55 - 08.35</div>
-                <div class="lesson-subject">Matematika</div>
-                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
+          </div>
+        )}
+
+        {/* System Status */}
+        <div className="mt-6 flex justify-center gap-4 flex-wrap">
+          <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} backdrop-blur-lg rounded-xl px-4 py-2 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} flex items-center gap-2`}>
+            <Battery className="w-4 h-4 text-green-400" />
+            <span className={`text-xs ${darkMode ? 'text-cyan-300' : 'text-purple-700'}`}>System Active</span>
+          </div>
+          <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} backdrop-blur-lg rounded-xl px-4 py-2 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} flex items-center gap-2`}>
+            <Wifi className="w-4 h-4 text-green-400" />
+            <span className={`text-xs ${darkMode ? 'text-cyan-300' : 'text-purple-700'}`}>Connected</span>
+          </div>
+          {musicOn && (
+            <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} backdrop-blur-lg rounded-xl px-4 py-2 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} flex items-center gap-2`}>
+              <Music className="w-4 h-4 text-green-400 animate-pulse" />
+              <span className={`text-xs ${darkMode ? 'text-cyan-300' : 'text-purple-700'}`}>Music ON</span>
             </div>
-            <div class="lesson">
-                <span class="lesson-number">3</span>
-                <div class="lesson-time">08.35 - 09.15</div>
-                <div class="lesson-subject">Matematika</div>
-                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">4</span>
-                <div class="lesson-time">09.15 - 09.55</div>
-                <div class="lesson-subject">Pend. Pancasila</div>
-                <div class="lesson-teacher">23. Marlita Sutiawati, SH.</div>
-            </div>
-            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
-            <div class="lesson">
-                <span class="lesson-number">5</span>
-                <div class="lesson-time">10.25 - 11.05</div>
-                <div class="lesson-subject">Pend. Pancasila</div>
-                <div class="lesson-teacher">23. Marlita Sutiawati, SH.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">6</span>
-                <div class="lesson-time">11.05 - 11.45</div>
-                <div class="lesson-subject">Prakarya</div>
-                <div class="lesson-teacher">12. Hj. Surandini Wahyu, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
-            <div class="lesson">
-                <span class="lesson-number">7</span>
-                <div class="lesson-time">12.35 - 13.15</div>
-                <div class="lesson-subject">Prakarya</div>
-                <div class="lesson-teacher">12. Hj. Surandini Wahyu, S.Pd.</div>
-            </div>
-            <div class="total-lessons">📊 TOTAL: 7 Jam Pelajaran</div>
+          )}
         </div>
 
-        <!-- KAMIS -->
-        <div id="kamis" class="schedule-card">
-            <div class="lesson">
-                <span class="lesson-number">1</span>
-                <div class="lesson-time">07.15 - 07.55</div>
-                <div class="lesson-subject">PJOK</div>
-                <div class="lesson-teacher">39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">2</span>
-                <div class="lesson-time">07.55 - 08.35</div>
-                <div class="lesson-subject">PJOK</div>
-                <div class="lesson-teacher">39. Hasbi Hadi Ridwanalloh, S.Pd., M.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">3</span>
-                <div class="lesson-time">08.35 - 09.15</div>
-                <div class="lesson-subject">BK</div>
-                <div class="lesson-teacher">11. Dra. Rr. Rita Puspita</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">4</span>
-                <div class="lesson-time">09.15 - 09.55</div>
-                <div class="lesson-subject">IPS</div>
-                <div class="lesson-teacher">05. Purnia, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
-            <div class="lesson">
-                <span class="lesson-number">5</span>
-                <div class="lesson-time">10.25 - 11.05</div>
-                <div class="lesson-subject">Matematika</div>
-                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">6</span>
-                <div class="lesson-time">11.05 - 11.45</div>
-                <div class="lesson-subject">Matematika</div>
-                <div class="lesson-teacher">19. Ida Susanti, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
-            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
+        {/* Footer */}
+        <div className="mt-8 text-center">
+          <div className={`${darkMode ? 'bg-black/40' : 'bg-white/60'} backdrop-blur-lg rounded-2xl p-4 border ${darkMode ? 'border-cyan-500/30' : 'border-purple-300'} inline-block`}>
+            <p className={`${darkMode ? 'text-cyan-300' : 'text-purple-700'} text-sm flex items-center gap-2 justify-center flex-wrap`}>
+              🤖 Powered by Robot Scheduler AI • Made with ⚡ Technology
+              <span className={`${darkMode ? 'bg-green-500/20 text-green-300' : 'bg-green-100 text-green-700'} px-2 py-1 rounded text-xs`}>v2.0 PRO</span>
+            </p>
+          </div>
         </div>
 
-        <!-- JUMAT -->
-        <div id="jumat" class="schedule-card">
-            <div class="lesson">
-                <span class="lesson-number">1</span>
-                <div class="lesson-time">07.15 - 07.55</div>
-                <div class="lesson-subject">B. Indonesia</div>
-                <div class="lesson-teacher">20. Adah, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">2</span>
-                <div class="lesson-time">07.55 - 08.35</div>
-                <div class="lesson-subject">B. Indonesia</div>
-                <div class="lesson-teacher">20. Adah, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">3</span>
-                <div class="lesson-time">08.35 - 09.15</div>
-                <div class="lesson-subject">IPA</div>
-                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">4</span>
-                <div class="lesson-time">09.15 - 09.55</div>
-                <div class="lesson-subject">IPA</div>
-                <div class="lesson-teacher">37. Anjar Bayu Kuncoro, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISTIRAHAT I (09.55 - 10.25)</div>
-            <div class="lesson">
-                <span class="lesson-number">5</span>
-                <div class="lesson-time">10.25 - 11.05</div>
-                <div class="lesson-subject">B. Inggris</div>
-                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
-            </div>
-            <div class="lesson">
-                <span class="lesson-number">6</span>
-                <div class="lesson-time">11.05 - 11.45</div>
-                <div class="lesson-subject">B. Inggris</div>
-                <div class="lesson-teacher">09. Hj. Anani Mulyani, S.Pd.</div>
-            </div>
-            <div class="break-time">⏸️ ISHOMA + MBG (11.45 - 12.35)</div>
-            <div class="total-lessons">📊 TOTAL: 6 Jam Pelajaran</div>
+        {/* Quick Tips */}
+        <div className={`mt-4 ${darkMode ? 'bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-500/20' : 'bg-purple-50 border-purple-200'} backdrop-blur-lg rounded-2xl p-4 border`}>
+          <p className={`text-sm ${darkMode ? 'text-purple-300' : 'text-purple-700'} text-center`}>
+            💡 <strong>Tips:</strong> Klik ✓ untuk menandai selesai (+10 XP) • ⭐ untuk favorit • 📝 untuk catatan
+          </p>
         </div>
+      </div>
     </div>
+  );
+};
 
-    <div class="robot-corner">🤖</div>
-
-    <script>
-        function showDay(day) {
-            const cards = document.querySelectorAll('.schedule-card');
-            const buttons = document.querySelectorAll('.day-btn');
-            
-            cards.forEach(card => {
-                card.classList.remove('active');
-            });
-            
-            buttons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            document.getElementById(day).classList.add('active');
-            event.target.classList.add('active');
-        }
-    </script>
-</body>
-</html>
+export default ScheduleApp;
